@@ -1,0 +1,43 @@
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.form_input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.todo_list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.todo_item {
+  display: flex;
+  align-items: center;
+  background-color: rgb(132, 132, 132);
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.todo_item div {
+  margin-bottom: 5px;
+  flex: 1;
+}
+
+.todo_item button {
+  padding: 5px 10px;
+  background-color: #ff5e5e;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.todo_item button:hover {
+  background-color: #d43e3e;
+}

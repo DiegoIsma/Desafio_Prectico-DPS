@@ -1,0 +1,112 @@
+import { useState } from 'react';
+
+export const Headers = ({
+  allProducts,
+  setAllProducts,
+  total,
+  countProducts,
+  setCountProducts,
+  setTotal,
+}) => {
+  const [active, setActive] = useState(false);
+
+  const onDeleteProduct = product => {
+    const results = allProducts.filter(
+      item => item.id !== product.id
+    );
+    setTotal(total - product.price * product.quantity);
+    setCountProducts(countProducts - product.quantity);
+    setAllProducts(results);
+  };
+
+  const onCleanCart = () => {
+    setAllProducts([]);
+    setTotal(0);
+    setCountProducts(0);
+  };
+
+  const onUpdateQuantity = (product, newQuantity) => {
+    const updatedProducts = allProducts.map(item => {
+      if (item.id === product.id) {
+        return { ...item, quantity: newQuantity };
+      }
+      return item;
+    });
+    setAllProducts(updatedProducts);
+    // Recalcular el total y el número total de productos
+    const newTotal = updatedProducts.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const newCount = updatedProducts.reduce((acc, item) => acc + item.quantity, 0);
+    setTotal(newTotal);
+    setCountProducts(newCount);
+  };
+
+  return (
+    <header>
+      <h1>Jaguar Sport</h1>
+      <div className='container-icon'>
+        <div
+          className='container-cart-icon'
+          onClick={() => setActive(!active)}
+        >
+          <img
+            src="https://e7.pngegg.com/pngimages/833/426/png-clipart-black-shopping-cart-icon-for-free-black-shopping-cart.png"
+            alt="carrito"
+            className="icon-cart"
+          />
+          <div className='count-products'>
+            <span id='contador-productos'>{countProducts}</span>
+          </div>
+        </div>
+        <div
+          className={`container-cart-products ${active ? '' : 'hidden-cart'}`}
+        >
+          {allProducts?.length ? (
+            <>
+              <div className='row-product'>
+                {allProducts.map(product => (
+                  <div className='cart-product' key={product.id}>
+                    <img
+                      src={product.urlImage} 
+                      alt={product.title} 
+                      className="tumbal" 
+                    />
+                    <div className='info-cart-product'>
+                      <input
+                        type="number"
+                        value={product.quantity}
+                        onChange={e => onUpdateQuantity(product, parseInt(e.target.value))}
+                        className="cantidad-producto-carrito"
+                        min="1" 
+                      />
+                      <p className='titulo-producto-carrito'>
+                        {product.title}
+                      </p>
+                      <span className='precio-producto-carrito'>
+                        ${product.price}
+                      </span>
+                    </div>
+                    <img
+                      src="https://static.vecteezy.com/system/resources/previews/018/887/462/original/signs-close-icon-png.png"
+                      alt="cerrar"
+                      className="icon-close"
+                      onClick={() => onDeleteProduct(product)}
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className='cart-total'>
+                <h3>Total:</h3>
+                <span className='total-pagar'>${total}</span>
+              </div>
+              <button className='btn-clear-all' onClick={onCleanCart}>
+                Vaciar Carrito
+              </button>
+            </>
+          ) : (
+            <p className='cart-empty'>El carrito está vacío</p>
+          )}
+        </div>
+      </div>
+    </header>
+  );
+};
